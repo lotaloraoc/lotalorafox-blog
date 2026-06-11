@@ -42,6 +42,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
+          timeout: 120000
           local-dir: ./dist/
-          server-dir: public_html/
+          server-dir: domains/lotalorafox.com/public_html/
           log-level: minimal

@@ -47,7 +47,7 @@ Also set the real production URL in `astro.config.mjs`. This is used for canonic
 npm run build
 ```
 
-Upload the **contents** of `dist/` into the domain's `public_html/` directory using Hostinger File Manager or FTP. No Node.js server or database is required.
+Upload the **contents** of `dist/` into `domains/lotalorafox.com/public_html/` using Hostinger File Manager or FTP. No Node.js server or database is required.
 
 ## Automatic FTP deployment
 

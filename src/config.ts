@@ -13,5 +13,5 @@ export const siteConfig = {
     { label: 'X', href: 'https://x.com/lotalorafox' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/luiseotalora/' },
   ],
-  siteUrl: 'https://example.com',
+  siteUrl: 'https://lotalorafox.com',
 } as const;

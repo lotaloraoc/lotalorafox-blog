@@ -3,7 +3,7 @@ import { unified } from '@astrojs/markdown-remark';
 import remarkGfm from 'remark-gfm';
 
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://lotalorafox.com',
   output: 'static',
   markdown: {
     processor: unified({ remarkPlugins: [remarkGfm] }),

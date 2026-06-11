@@ -1,0 +1,30 @@
+---
+import type { Article } from '../lib/articles';
+import { formatDate, getArticlePath } from '../lib/articles';
+
+interface Props {
+  article: Article;
+  index: number;
+}
+
+const { article, index } = Astro.props;
+const isSpanish = article.data.language === 'es';
+---
+
+<article class="article-card">
+  <a
+    href={getArticlePath(article)}
+    aria-label={`${isSpanish ? 'Leer' : 'Read'} ${article.data.title}`}
+  >
+    <span class="article-index">{String(index + 1).padStart(2, '0')}</span>
+    <div class="article-copy">
+      <div class="article-meta">
+        <span>{formatDate(article.data.publishedAt, article.data.language)}</span>
+        <span>{article.data.tags[0] ?? (isSpanish ? 'Ingeniería' : 'Engineering')}</span>
+      </div>
+      <h2>{article.data.title}</h2>
+      <p>{article.data.description}</p>
+    </div>
+    <span class="article-arrow" aria-hidden="true">↗</span>
+  </a>
+</article>

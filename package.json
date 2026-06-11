@@ -1,0 +1,23 @@
+{
+  "name": "lotalorafox-blog",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "7.2.0",
+    "@astrojs/rss": "4.0.18",
+    "astro": "6.4.6",
+    "mermaid": "11.15.0",
+    "remark-gfm": "4.0.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.6",
+    "typescript": "5.9.3"
+  }
+}

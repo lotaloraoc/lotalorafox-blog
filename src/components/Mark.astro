@@ -1,0 +1,45 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<a class:list={['mark', { compact }]} href="/" aria-label="Go to homepage">
+  <span aria-hidden="true">L</span>
+  <span class="mark-dot" aria-hidden="true"></span>
+</a>
+
+<style>
+  .mark {
+    position: relative;
+    display: inline-grid;
+    width: 2.45rem;
+    height: 2.45rem;
+    place-items: center;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .mark.compact {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.82rem;
+  }
+
+  .mark-dot {
+    position: absolute;
+    right: 0.22rem;
+    bottom: 0.22rem;
+    width: 0.24rem;
+    height: 0.24rem;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+</style>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Markdown publishing flow</title>
+  <desc id="desc">Markdown files pass through an Astro build and become a static website.</desc>
+  <rect width="1200" height="620" fill="#e9e6df"/>
+  <g fill="none" stroke="#151515" stroke-width="2">
+    <rect x="95" y="205" width="245" height="210"/>
+    <rect x="478" y="205" width="245" height="210"/>
+    <rect x="860" y="205" width="245" height="210"/>
+    <path d="M340 310h138M723 310h137"/>
+    <path d="m454 294 24 16-24 16M836 294l24 16-24 16"/>
+  </g>
+  <g fill="#151515" font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="217" y="286" font-size="28">Markdown</text>
+    <text x="217" y="327" font-size="18">content + metadata</text>
+    <text x="600" y="286" font-size="28">Astro build</text>
+    <text x="600" y="327" font-size="18">validate + render</text>
+    <text x="982" y="286" font-size="28">Static site</text>
+    <text x="982" y="327" font-size="18">fast, portable HTML</text>
+  </g>
+  <circle cx="1105" cy="205" r="12" fill="#5546ff"/>
+</svg>

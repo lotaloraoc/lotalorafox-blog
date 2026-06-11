@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f6f8fb"/>
+  <g stroke="#d9d6cf" stroke-width="1">
+    <path d="M96 0v630M312 0v630M888 0v630M1104 0v630"/>
+    <path d="M0 78h1200M0 552h1200"/>
+  </g>
+  <rect x="96" y="78" width="72" height="72" fill="none" stroke="#151515" stroke-width="2"/>
+  <text x="120" y="130" fill="#151515" font-family="Arial, sans-serif" font-size="42" font-weight="600">L</text>
+  <circle cx="151" cy="133" r="7" fill="#2563eb"/>
+  <text x="312" y="270" fill="#111827" font-family="Arial, sans-serif" font-size="70">LotaloraFox</text>
+  <text x="312" y="338" fill="#596579" font-family="Georgia, serif" font-size="30">Software development, systems, and field notes.</text>
+</svg>

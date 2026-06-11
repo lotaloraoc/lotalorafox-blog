@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getPublishedArticles } from '../../lib/articles';
+
+const articles = await getPublishedArticles();
+---
+
+<BaseLayout title="Articles" description="Development articles, architecture notes, and engineering field notes." language="en" languageHref="/es/articulos/">
+  <header class="page-header section-frame">
+    <span class="section-number">01</span>
+    <div>
+      <p class="eyebrow">Writing</p>
+      <h1>Articles and field notes.</h1>
+      <p>Long-form thinking about software systems, tools, and the craft behind dependable products.</p>
+    </div>
+  </header>
+
+  <section class="articles-section section-frame" aria-label="All articles">
+    <div class="article-list">
+      {articles.map((article, index) => <ArticleCard article={article} index={index} />)}
+    </div>
+  </section>
+</BaseLayout>

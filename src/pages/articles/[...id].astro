@@ -1,0 +1,85 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate } from '../../lib/articles';
+import { siteConfig } from '../../config';
+
+export async function getStaticPaths() {
+  const articles = await getCollection(
+    'articles',
+    ({ data }) => !data.draft && data.language === 'en',
+  );
+  const translations = await getCollection(
+    'articles',
+    ({ data }) => !data.draft && data.language === 'es',
+  );
+
+  return articles.map((article) => ({
+    params: { id: article.data.translationKey },
+    props: {
+      article,
+      translation: translations.find(
+        (candidate) => candidate.data.translationKey === article.data.translationKey,
+      ),
+    },
+  }));
+}
+
+const { article, translation } = Astro.props;
+const { Content, headings } = await render(article);
+const tocHeadings = headings.filter((heading) => heading.depth === 2);
+const hasToc = tocHeadings.length > 0;
+---
+
+<BaseLayout
+  title={article.data.title}
+  description={article.data.description}
+  article
+  language="en"
+  languageHref={translation ? `/es/articulos/${translation.data.translationKey}/` : '/es/articulos/'}
+>
+  <article class="article-page">
+    <header class="article-header section-frame">
+      <a class="article-back" href="/articles/">← All articles</a>
+      <div class="article-heading">
+        <p class="eyebrow">{article.data.tags.join(' · ')}</p>
+        <h1>{article.data.title}</h1>
+        <p class="article-description">{article.data.description}</p>
+      </div>
+      <div class="article-byline">
+        <span>By {article.data.author}</span>
+        <time datetime={article.data.publishedAt.toISOString()}>
+          {formatDate(article.data.publishedAt)}
+        </time>
+      </div>
+    </header>
+
+    <div class:list={['article-body-wrap', 'section-frame', { 'has-toc': hasToc }]}>
+      {hasToc && (
+        <aside class="article-toc" aria-label="Table of contents">
+          <p>On this page</p>
+          {tocHeadings.map((heading) => (
+            <a href={`#${heading.slug}`}>{heading.text}</a>
+          ))}
+        </aside>
+      )}
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+
+    <footer class="article-footer section-frame">
+      <div>
+        <span class="eyebrow">Written by</span>
+        <strong>{article.data.author}</strong>
+      </div>
+      <p>More notes on building software with clarity and intent.</p>
+      <div class="article-footer-links">
+        <a class="text-link" href="/articles/">Continue reading ↗</a>
+        <a class="text-link secondary" href={siteConfig.github} target="_blank" rel="noreferrer">
+          GitHub ↗
+        </a>
+      </div>
+    </footer>
+  </article>
+</BaseLayout>

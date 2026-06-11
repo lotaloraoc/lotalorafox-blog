@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { siteConfig } from '../config';
+import { getPublishedArticles } from '../lib/articles';
+
+const articles = await getPublishedArticles();
+const featured = articles.filter((article) => article.data.featured).slice(0, 3);
+const selected = featured.length ? featured : articles.slice(0, 3);
+---
+
+<BaseLayout language="en" languageHref="/es/">
+  <section class="hero section-frame">
+    <span class="section-number">01</span>
+    <div class="hero-content">
+      <p class="eyebrow">{siteConfig.role}</p>
+      <h1>I design and build software systems, then write down what the work teaches me.</h1>
+      <p class="hero-intro">{siteConfig.description}</p>
+      <div class="hero-links">
+        <a class="text-link" href="/articles/">Read the articles <span aria-hidden="true">↗</span></a>
+        <a class="text-link secondary" href={siteConfig.github} target="_blank" rel="noreferrer">
+          View GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="articles-section section-frame" aria-labelledby="selected-writing">
+    <div class="section-heading">
+      <span class="section-number">02</span>
+      <div>
+        <p class="eyebrow">Selected writing</p>
+        <h2 id="selected-writing">Ideas, patterns, and field notes.</h2>
+      </div>
+      <a class="section-action" href="/articles/">All articles ↗</a>
+    </div>
+
+    <div class="article-list">
+      {selected.map((article, index) => <ArticleCard article={article} index={index} />)}
+    </div>
+  </section>
+
+  <section id="about" class="about-section section-frame" aria-labelledby="about-heading">
+    <span class="section-number">03</span>
+    <div class="about-grid">
+      <div>
+        <p class="eyebrow">About</p>
+        <h2 id="about-heading">Hello, I’m {siteConfig.name}.</h2>
+      </div>
+      <div class="about-copy">
+        <p>
+          I’m a developer based in {siteConfig.location}. I care about dependable systems,
+          thoughtful product engineering, and tools that make complex work feel clear.
+        </p>
+        <p>
+          This site is my public notebook: practical explanations, architecture sketches,
+          experiments, and lessons from building software in the real world.
+        </p>
+        <div class="profile-links" aria-label="Social profiles">
+          {siteConfig.socialLinks.map((link) => (
+            <a class="text-link" href={link.href} target="_blank" rel="noreferrer">
+              {link.label} <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer section-frame">
+    <span>{new Date().getFullYear()} {siteConfig.name}</span>
+    <span>Built with Astro and Markdown.</span>
+  </footer>
+</BaseLayout>

@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { siteConfig } from '../../config';
+import { getPublishedArticles } from '../../lib/articles';
+
+const articles = await getPublishedArticles('es');
+const featured = articles.filter((article) => article.data.featured).slice(0, 3);
+const selected = featured.length ? featured : articles.slice(0, 3);
+---
+
+<BaseLayout
+  title="Inicio"
+  description="Notas sobre ingeniería de software, diseño de sistemas, herramientas y el oficio de crear productos útiles."
+  language="es"
+  languageHref="/"
+>
+  <section class="hero section-frame">
+    <span class="section-number">01</span>
+    <div class="hero-content">
+      <p class="eyebrow">Desarrollador de software y escritor técnico</p>
+      <h1>Diseño y construyo sistemas de software, y escribo lo que el trabajo me enseña.</h1>
+      <p class="hero-intro">
+        Notas sobre ingeniería de software, diseño de sistemas, herramientas para desarrolladores
+        y el oficio práctico de crear productos útiles.
+      </p>
+      <div class="hero-links">
+        <a class="text-link" href="/es/articulos/">Leer los artículos <span aria-hidden="true">↗</span></a>
+        <a class="text-link secondary" href={siteConfig.github} target="_blank" rel="noreferrer">
+          Ver GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="articles-section section-frame" aria-labelledby="escritura-seleccionada">
+    <div class="section-heading">
+      <span class="section-number">02</span>
+      <div>
+        <p class="eyebrow">Escritura seleccionada</p>
+        <h2 id="escritura-seleccionada">Ideas, patrones y notas de campo.</h2>
+      </div>
+      <a class="section-action" href="/es/articulos/">Todos los artículos ↗</a>
+    </div>
+
+    <div class="article-list">
+      {selected.map((article, index) => <ArticleCard article={article} index={index} />)}
+    </div>
+  </section>
+
+  <section id="sobre-mi" class="about-section section-frame" aria-labelledby="sobre-mi-heading">
+    <span class="section-number">03</span>
+    <div class="about-grid">
+      <div>
+        <p class="eyebrow">Sobre mí</p>
+        <h2 id="sobre-mi-heading">Hola, soy {siteConfig.name}.</h2>
+      </div>
+      <div class="about-copy">
+        <p>
+          Soy desarrollador en {siteConfig.location}. Me importan los sistemas confiables,
+          la ingeniería de producto bien pensada y las herramientas que vuelven claro el trabajo complejo.
+        </p>
+        <p>
+          Este sitio es mi cuaderno público: explicaciones prácticas, esquemas de arquitectura,
+          experimentos y lecciones aprendidas al construir software en el mundo real.
+        </p>
+        <div class="profile-links" aria-label="Perfiles sociales">
+          {siteConfig.socialLinks.map((link) => (
+            <a class="text-link" href={link.href} target="_blank" rel="noreferrer">
+              {link.label} <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer section-frame">
+    <span>{new Date().getFullYear()} {siteConfig.name}</span>
+    <span>Construido con Astro y Markdown.</span>
+  </footer>
+</BaseLayout>

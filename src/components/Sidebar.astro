@@ -1,0 +1,73 @@
+---
+import Mark from './Mark.astro';
+import { siteConfig } from '../config';
+
+const path = Astro.url.pathname;
+const isSpanish = path === '/es/' || path.startsWith('/es/');
+
+interface Props {
+  language?: 'en' | 'es';
+  languageHref?: string;
+}
+
+const {
+  language = isSpanish ? 'es' : 'en',
+  languageHref = language === 'es' ? '/' : '/es/',
+} = Astro.props;
+
+const links = language === 'es'
+  ? [
+      { href: '/es/', label: 'Inicio' },
+      { href: '/es/articulos/', label: 'Artículos' },
+      { href: '/es/#sobre-mi', label: 'Sobre mí' },
+    ]
+  : [
+      { href: '/', label: 'Home' },
+      { href: '/articles/', label: 'Articles' },
+      { href: '/#about', label: 'About' },
+    ];
+
+const rssHref = language === 'es' ? '/es/rss.xml' : '/rss.xml';
+---
+
+<aside class="sidebar">
+  <div class="sidebar-inner">
+    <Mark />
+
+    <nav aria-label="Primary navigation">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class:list={{ active: link.href === '/' ? path === '/' : path.startsWith(link.href) }}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a href={rssHref}>RSS</a>
+      <a class="language-switch" href={languageHref} hreflang={language === 'es' ? 'en' : 'es'}>
+        {language === 'es' ? 'English' : 'Español'}
+      </a>
+    </nav>
+
+    <div class="sidebar-socials" aria-label="Social profiles">
+      {siteConfig.socialLinks.map((link) => (
+        <a href={link.href} target="_blank" rel="noreferrer">
+          {link.label} <span aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</aside>
+
+<header class="mobile-header">
+  <Mark compact />
+  <a class="mobile-name" href="/">{siteConfig.shortName}</a>
+  <nav aria-label="Mobile navigation">
+    <a href={language === 'es' ? '/es/articulos/' : '/articles/'}>
+      {language === 'es' ? 'Artículos' : 'Articles'}
+    </a>
+    <a href={languageHref} hreflang={language === 'es' ? 'en' : 'es'}>
+      {language === 'es' ? 'EN' : 'ES'}
+    </a>
+  </nav>
+</header>

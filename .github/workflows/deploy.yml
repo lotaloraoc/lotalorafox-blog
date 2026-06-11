@@ -34,7 +34,9 @@ jobs:
       - name: Build static site
         run: npm run build
 
-      - name: Deploy dist to public_html
+      - name: Deploy dist to public_html (attempt 1)
+        id: deploy_1
+        continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -42,7 +44,37 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          timeout: 120000
+          timeout: 60000
+          local-dir: ./dist/
+          server-dir: domains/lotalorafox.com/public_html/
+          log-level: minimal
+
+      - name: Deploy dist to public_html (attempt 2)
+        id: deploy_2
+        if: steps.deploy_1.outcome == 'failure'
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          timeout: 60000
+          local-dir: ./dist/
+          server-dir: domains/lotalorafox.com/public_html/
+          log-level: minimal
+
+      - name: Deploy dist to public_html (attempt 3)
+        if: steps.deploy_1.outcome == 'failure' && steps.deploy_2.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          timeout: 60000
           local-dir: ./dist/
           server-dir: domains/lotalorafox.com/public_html/
           log-level: minimal

@@ -24,6 +24,9 @@ const bceLogit = (s, t) => softplus(s) - t * s;
 const qloss = (s, t) => Math.pow(sigmoid(s) - t, 2);
 const on = (id, type, fn) => $(id).addEventListener(type, fn);
 const getSlider = (id) => Number($(id).value);
+const chartFont = getComputedStyle(document.documentElement)
+  .getPropertyValue('--font-sans')
+  .trim();
 function setSelected(button, selected, className = 'primary') {
   button.classList.toggle(className, selected);
   button.setAttribute('aria-pressed', String(selected));
@@ -60,7 +63,7 @@ function mapper(p, x0, x1, y0, y1) {
 }
 function axes(ctx, p, m, xmin, xmax, ymin, ymax, xt = 4, yt = 4) {
   ctx.save();
-  ctx.font = '11px system-ui,sans-serif';
+  ctx.font = `12px ${chartFont}`;
   ctx.fillStyle = '#53647d';
   ctx.strokeStyle = '#e8edf5';
   ctx.lineWidth = 1;
@@ -114,10 +117,10 @@ function point(ctx, x, y, color, size = 5, stroke = true) {
   }
   ctx.restore();
 }
-function textAt(ctx, str, x, y, color = '#203551', size = 11) {
+function textAt(ctx, str, x, y, color = '#203551', size = 12) {
   ctx.save();
   ctx.fillStyle = color;
-  ctx.font = `700 ${size}px system-ui,sans-serif`;
+  ctx.font = `700 ${size}px ${chartFont}`;
   ctx.fillText(str, x, y);
   ctx.restore();
 }
@@ -685,10 +688,19 @@ function render() {
 }
 
 render();
-window.addEventListener('resize', () => {
-  drawBoundary();
-  updateLoss();
-  updateConvex();
-  drawBowl(getSlider('delta1'), getSlider('delta2'));
-  drawToyLoss();
+// The sidebar, contents and lab disclosures can resize plots without a window resize.
+const redrawCharts = {
+  boundaryChart: drawBoundary,
+  sigChart: () => drawSig(getSlider('logit')),
+  lossChart: () => drawLoss(getSlider('logit'), Number($('labelt').value)),
+  convexChart: updateConvex,
+  bowlChart: () => drawBowl(getSlider('delta1'), getSlider('delta2')),
+  optChart: drawToyLoss,
+};
+const chartObserver = new ResizeObserver((entries) => {
+  for (const { target, contentRect } of entries) {
+    if (contentRect.width > 0 && contentRect.height > 0)
+      redrawCharts[target.id]();
+  }
 });
+for (const id of Object.keys(redrawCharts)) chartObserver.observe($(id));

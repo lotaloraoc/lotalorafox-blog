@@ -48,7 +48,9 @@ Z @ w       → 392 logits
 σ(Z @ w)    → 392 probabilities
 Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is one observation. Each column is a model input (two features and a constant).</p></div>
  </div>
- <div class="lab"><div class="labhead"><h3>Try a matrix multiplication by hand</h3><span>Use the sliders to change one augmented row</span></div><div class="labbody">
+ <details class="lab" open>
+  <summary class="labhead"><span class="lab-title">Try a matrix multiplication by hand</span><span class="lab-description">Use the sliders to change one augmented row</span></summary>
+  <div class="labbody">
   <div class="controls">
    <div class="control"><label for="vx1">x₁ <output id="vx1o">0.70</output></label><input id="vx1" type="range" min="-2" max="2" step="0.05" value="0.7"></div>
    <div class="control"><label for="vx2">x₂ <output id="vx2o">-0.80</output></label><input id="vx2" type="range" min="-2" max="2" step="0.05" value="-0.8"></div>
@@ -57,7 +59,8 @@ Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is 
   <div class="formula" id="dotstep" aria-live="polite">(5.1718 × 0.70) + (1.6045 × −0.80) + 0.5622 = 2.9000</div>
   <div class="readout"><div class="reading"><div>Logit s</div><strong id="dotS">—</strong></div><div class="reading"><div>Probability σ(s)</div><strong id="dotP">—</strong></div><div class="reading"><div>Prediction ≥ 0.5</div><strong id="dotY">—</strong></div></div>
   <p class="small">This is a synthetic example feature vector evaluated with the <strong>actual optimized weights</strong>. Its computed probability is illustrative, not a record taken from the original dataset.</p>
- </div></div>
+  </div>
+ </details>
  <div class="callout"><strong>Why matrix notation matters:</strong> NumPy can calculate every score with a single <code>Z @ w</code>. More importantly, derivatives become compact: <strong>∇f(w) = Zᵀ(y − t)/m</strong> and <strong>H(w) = ZᵀDZ/m</strong>. Both are built from the same matrix Z.</div>
 </div>
 
@@ -67,7 +70,9 @@ Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is 
 <p class="guide-kicker">02 / FEATURE SPACE</p>
 <p>Logistic regression is called “regression”, but the notebook uses it for binary classification. First compute <span class="mathinline">s = w₁x₁ + w₂x₂ + w₃</span>; then turn it into <span class="mathinline">p = σ(s) = 1/(1+e⁻ˢ)</span>. The class threshold of 0.5 corresponds exactly to <strong>s = 0</strong>.</p>
  <div class="equation">w₁x₁ + w₂x₂ + w₃ = 0 &nbsp; ⟺ &nbsp; x₂ = −(w₁/w₂)x₁ − w₃/w₂</div>
- <div class="lab"><div class="labhead"><h3>Interactive decision boundary</h3><span>Teaching dataset · not the original 392 records</span></div><div class="labbody">
+ <details class="lab" open>
+  <summary class="labhead"><span class="lab-title">Interactive decision boundary</span><span class="lab-description">Teaching dataset · not the original 392 records</span></summary>
+  <div class="labbody">
   <div class="buttonrow"><button type="button" class="btn primary" data-preset="opt" aria-pressed="true">Optimized w*</button><button type="button" class="btn" data-preset="a" aria-pressed="false">Candidate a</button><button type="button" class="btn" data-preset="b" aria-pressed="false">Candidate b</button><button type="button" class="btn" data-preset="c" aria-pressed="false">Candidate c</button><button type="button" class="btn" data-preset="zero" aria-pressed="false">Start at w₀</button></div>
   <canvas role="img" id="boundaryChart" class="chart tall" aria-label="Interactive boundary and illustrative sample of data points"></canvas>
   <div class="legend"><span><i class="dot" style="background:#16856b"></i>Illustrative class 0</span><span><i class="dot" style="background:#c74654"></i>Illustrative class 1</span><span><i class="dot" style="background:#315cf4"></i>Selected example x = (0.7, −0.8)</span></div>
@@ -78,7 +83,8 @@ Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is 
   </div>
   <div class="readout"><div class="reading"><div>Boundary slope</div><strong id="slope">—</strong><small>−w₁/w₂</small></div><div class="reading"><div>Boundary intercept</div><strong id="intercept">—</strong><small>−w₃/w₂</small></div><div class="reading"><div>Example prediction</div><strong id="exampleP">—</strong><small>p(class 1) at blue point</small></div></div>
   <p id="boundaryNote" aria-live="polite" class="small"></p>
- </div></div>
+  </div>
+ </details>
  <div class="callout warning"><strong>Two different spaces, never confuse them:</strong> the <strong>x₁–x₂ chart</strong> shows patients/features and a decision <em>line</em>; the <strong>w₁–w₂–w₃ space</strong> contains all possible models, and each point in that space has a loss. The loss has a convex geometry there—even though the decision boundary in feature space is linear.</div>
 </div>
 
@@ -88,12 +94,15 @@ Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is 
 <p class="guide-kicker">03 / PROBABILITY &amp; LOSS</p>
 <p>We want high probability on the true class, not just the right side of a threshold. With a Bernoulli model, the likelihood of label <span class="mathinline">t ∈ {0,1}</span> is <span class="mathinline">pᵗ(1−p)¹⁻ᵗ</span>. Minimizing negative log-likelihood gives the <strong>binary cross-entropy (BCE)</strong> used in the notebook.</p>
  <div class="equation">ℓ(p,t) = −t log(p) − (1−t) log(1−p)</div>
- <div class="lab"><div class="labhead"><h3>One prediction, two loss choices</h3><span>Compare BCE vs squared probability error</span></div><div class="labbody">
+ <details class="lab" open>
+  <summary class="labhead"><span class="lab-title">One prediction, two loss choices</span><span class="lab-description">Compare BCE vs squared probability error</span></summary>
+  <div class="labbody">
   <div class="controls controls-pair"><div class="control"><label for="logit">Model score / logit s <output id="logito">0.00</output></label><input id="logit" type="range" min="-8" max="8" step="0.05" value="0"></div><div class="control"><label for="labelt">Actual label t</label><select id="labelt"><option value="1">1 · malignant</option><option value="0">0 · non-malignant</option></select></div></div>
   <div class="twochart"><div><canvas role="img" class="chart" id="sigChart" aria-label="Sigmoid probability function"></canvas><p class="small center">Sigmoid: turns a logit into a probability</p></div><div><canvas role="img" class="chart" id="lossChart" aria-label="BCE and squared error curves as functions of score"></canvas><p class="small center">Loss as a function of the <em>logit s</em></p></div></div>
   <div class="readout"><div class="reading"><div>Predicted p(class 1)</div><strong id="prob">—</strong></div><div class="reading"><div>BCE contribution</div><strong id="bceloss">—</strong><small>optimized by the notebook</small></div><div class="reading"><div>Squared error</div><strong id="mseloss">—</strong><small>comparison only</small></div></div>
   <div class="scorebox" id="lossexplain" aria-live="polite"></div>
- </div></div>
+  </div>
+ </details>
  <div class="grid cols2">
   <div class="card"><h3>BCE has the right probabilistic interpretation</h3><p>Its average is the negative log-likelihood of the training labels, so minimizing BCE is <strong>maximum likelihood estimation</strong> for Bernoulli observations. It heavily penalizes confident wrong predictions and rewards calibrated probabilities.</p></div>
   <div class="card"><h3>Why not optimize accuracy directly?</h3><p>Accuracy jumps only when a prediction crosses 0.5. As a function of w, it is a discontinuous, piecewise-constant objective with no useful ordinary gradient. BCE is smooth, differentiable and convex in w for this linear-logit model.</p></div>
@@ -110,13 +119,16 @@ loss = np.mean(np.logaddexp(0.0, s) - t * s)</div>
 <p class="guide-kicker">04 / CONVEX ANALYSIS</p>
 <p>A convex function lies <strong>at or below</strong> the straight chord connecting any two points on its graph. For a twice differentiable one-variable function, a nonnegative second derivative everywhere is enough to prove convexity. Logistic cross-entropy satisfies that condition as a function of the logit.</p>
  <div class="equation">ℓ″(s,t) = σ(s)(1 − σ(s)) ≥ 0</div>
- <div class="lab"><div class="labhead"><h3>Move the chord: visualize Jensen's inequality</h3><span>Experiment with BCE and an alternative</span></div><div class="labbody">
+ <details class="lab" open>
+  <summary class="labhead"><span class="lab-title">Move the chord: visualize Jensen's inequality</span><span class="lab-description">Experiment with BCE and an alternative</span></summary>
+  <div class="labbody">
   <div class="controls"><div class="control"><label for="ax">Endpoint a <output id="axo"></output></label><input id="ax" type="range" min="-8" max="7" step="0.1" value="-4"></div><div class="control"><label for="bx">Endpoint b <output id="bxo"></output></label><input id="bx" type="range" min="-7" max="8" step="0.1" value="3"></div><div class="control"><label for="tau">Mixture λ <output id="tauo"></output></label><input id="tau" type="range" min="0.05" max="0.95" step="0.05" value="0.5"></div></div>
   <div class="buttonrow"><button type="button" class="btn primary" data-convex="bce" aria-pressed="true">Cross-entropy (convex)</button><button type="button" class="btn" data-convex="mse" aria-pressed="false">Squared error after sigmoid (not globally convex)</button></div>
   <canvas role="img" id="convexChart" class="chart tall" aria-label="Convexity plot with moving chord and chosen point"></canvas>
   <div class="readout"><div class="reading"><div>Curve value f(mixture)</div><strong id="cv">—</strong></div><div class="reading"><div>Chord value</div><strong id="chord">—</strong></div><div class="reading"><div>Jensen inequality</div><strong id="jensen">—</strong><small>Convex if f(mix) ≤ chord for all pairs</small></div></div>
   <p class="small" id="convexCaption" aria-live="polite"></p>
- </div></div>
+  </div>
+ </details>
  <div class="grid cols2"><div class="card"><h3>From a convex curve to a convex surface</h3><p>Every logit <span class="mathinline">sᵢ = zᵢᵀw</span> is <em>affine</em> in w. A convex loss composed with an affine function remains convex. An average of convex functions remains convex. Therefore, <strong>f(w)</strong> is convex throughout ℝ³.</p></div><div class="card"><h3>Why the sigmoid isn't the convex object</h3><p>The sigmoid is S-shaped: it changes curvature. Its graph is <strong>not globally convex</strong>. What is convex is <em>cross-entropy applied to the linear score</em> as a function of the parameters. Squared error applied to sigmoid probabilities generally loses this guarantee.</p></div></div>
  <div class="callout"><strong>Global-minimum guarantee:</strong> For a differentiable convex f, any stationary point (<span class="mathinline">∇f(w) = 0</span>) is a global minimizer. With the notebook's full-rank design matrix and finite weights, the logistic Hessian is positive definite, making the objective strictly convex and its finite minimizer unique. Convexity does not mean BFGS magically reaches the solution in one step, or that the training loss becomes zero.</div>
 </div>
@@ -132,14 +144,17 @@ loss = np.mean(np.logaddexp(0.0, s) - t * s)</div>
 wₖ₊₁ = wₖ + αₖ pₖ</div><p>Bₖ is a changing approximation of the <em>inverse Hessian</em>. BFGS adapts to curvature and uses a line search. It does <strong>not</strong> require you to supply the true Hessian.</p></div>
  </div>
  <div class="flow"><div class="step">Start<br>w₀ = (0,0,0)</div><div class="arrow">→</div><div class="step">Evaluate<br>f(wₖ)</div><div class="arrow">→</div><div class="step">Estimate<br>∇f(wₖ)</div><div class="arrow">→</div><div class="step">Find direction<br>and line-search step</div><div class="arrow">→</div><div class="step">Update w,<br>check stop</div></div>
- <div class="lab"><div class="labhead"><h3>Optimizer sandbox: run the iterations yourself</h3><span>Toy logistic dataset · true computed losses, not historical notebook steps</span></div><div class="labbody">
+ <details class="lab" open>
+  <summary class="labhead"><span class="lab-title">Optimizer sandbox: run the iterations yourself</span><span class="lab-description">Toy logistic dataset · true computed losses, not historical notebook steps</span></summary>
+  <div class="labbody">
    <div class="controls"><div class="control"><label for="method">Teaching optimizer</label><select id="method"><option value="gd">Gradient descent</option><option value="bfgs">Illustrative BFGS</option></select></div><div class="control"><label for="alpha">GD learning rate α <output id="alphao">0.60</output></label><input id="alpha" type="range" min="0.05" max="4" step="0.05" value="0.6"></div><div class="control"><div class="control-label">Iterations so far</div><div style="font-size:22px;font-weight:850;color:#214acc;padding-top:6px" id="iterationCount">0</div></div></div>
    <div class="buttonrow"><button type="button" class="btn primary" id="oneStep">One step</button><button type="button" class="btn" id="tenSteps">Ten steps</button><button type="button" class="btn" id="runToEnd">Run 60 steps</button><button type="button" class="btn" id="resetOpt">Reset to zero</button></div>
    <canvas role="img" id="optChart" class="chart" aria-label="Actual toy logistic optimization loss by iteration"></canvas>
    <div class="readout"><div class="reading"><div>Current toy loss</div><strong id="toyLoss">—</strong></div><div class="reading"><div>Gradient magnitude</div><strong id="toyGrad">—</strong></div><div class="reading"><div>Current w</div><strong id="toyWeights" style="font-size:13px">—</strong></div></div>
    <div class="scorebox small" id="optStatus" aria-live="polite"></div>
    <p class="small"><strong>Important:</strong> This executes a minimal gradient-descent or inverse-Hessian BFGS <em>demonstration in JavaScript</em> on deterministic toy observations. SciPy's production BFGS has a more sophisticated line search, stopping conditions and derivative approximations. The notebook's actual run is still the separate 20-iteration plot above.</p>
- </div></div>
+  </div>
+ </details>
  <div class="grid cols2"><div class="card"><h3>What is saved by the callback?</h3><p>The notebook initializes <code>historial_f = [perdida(w0,Z,t)]</code> manually and appends a loss each time the callback receives an updated vector. <code>callback</code> is for observation/recording; it does <strong>not</strong> change the mathematical objective.</p></div><div class="card"><h3>Why did it stop?</h3><p>Its output reports <code>success=True</code>, 20 iterations, <span class="mathinline">f(w*) = 0.212163898</span>, and <span class="mathinline">‖∇f(w*)‖ ≈ 4.16×10⁻⁶</span>. A small gradient indicates little first-order improvement remains; combined with convexity, this supports a global minimizer.</p></div></div>
 </div>
 
@@ -153,14 +168,17 @@ wₖ₊₁ = wₖ + αₖ pₖ</div><p>Bₖ is a changing approximation of the <
 D = diag(yᵢ(1−yᵢ))       shape: (392, 392)
 H(w) = Zᵀ D Z / 392      shape: (3, 3)</div>
  <div class="callout"><strong>Proof that Hessian is positive semidefinite:</strong> for any v ∈ ℝ³,<div class="equation">vᵀH(w)v = (1/392) Σᵢ yᵢ(1−yᵢ)(zᵢᵀv)² ≥ 0.</div>Every term is nonnegative. At finite w, all yᵢ(1−yᵢ) are strictly positive mathematically, and because the notebook reports <span class="mathinline">rank(Z) = 3</span>, this expression is positive for every v ≠ 0. That is the deeper reason for strict convexity here—not merely that three eigenvalues happened to be positive at the final point.</div>
- <div class="lab"><div class="labhead"><h3>Walk around the convex bowl</h3><span>Second-order Taylor approximation at the <em>actual</em> notebook optimum</span></div><div class="labbody">
+ <details class="lab" open>
+  <summary class="labhead"><span class="lab-title">Walk around the convex bowl</span><span class="lab-description">Second-order Taylor approximation at the <em>actual</em> notebook optimum</span></summary>
+  <div class="labbody">
   <p class="small">Fix w₃ at its optimized value. Move w₁ and w₂ near w*. Using the <strong>actual Hessian matrix</strong>, the local loss is approximated by <span class="mathinline">f(w*+δ) ≈ f(w*) + ∇f(w*)ᵀδ + ½δᵀH*δ</span>. The colors and ellipses are <strong>not exact global loss contours</strong> because the original 392 CSV rows are absent from this HTML.</p>
   <canvas role="img" id="bowlChart" class="chart tall" aria-label="Local quadratic bowl contour around actual optimum"></canvas>
   <div class="controls controls-pair"><div class="control"><label for="delta1">Δw₁ from optimum <output id="delta1o">2.00</output></label><input id="delta1" type="range" min="-5" max="5" step="0.1" value="2"></div><div class="control"><label for="delta2">Δw₂ from optimum <output id="delta2o">1.00</output></label><input id="delta2" type="range" min="-4" max="4" step="0.1" value="1"></div></div>
   <div class="readout"><div class="reading"><div>Approx. local f(w)</div><strong id="bowlLoss">—</strong></div><div class="reading"><div>Approx. gradient norm</div><strong id="bowlGrad">—</strong></div><div class="reading"><div>Δw = (Δw₁,Δw₂,0)</div><strong id="bowlDelta">—</strong></div></div>
   <div class="buttonrow"><button type="button" class="btn" id="bowlReset">Return to optimum</button></div>
   <p class="small" id="bowlNote" aria-live="polite"></p>
- </div></div>
+  </div>
+ </details>
  <div class="grid cols2"><div class="card"><h3>Real Hessian at w*</h3><div class="formula">[ 0.012118  −0.015377  −0.012501 ]
 [−0.015377   0.059502   0.009306 ]
 [−0.012501   0.009306   0.065703 ]</div><p class="small">Off-diagonal terms describe interaction between parameters; symmetry follows from continuous mixed partial derivatives.</p></div><div class="card"><h3>Actual Hessian eigenvalues</h3><div class="formula">λ₁ = 0.00603294
@@ -174,14 +192,17 @@ H(w) = Zᵀ D Z / 392      shape: (3, 3)</div>
 <div class="logistic-guide" id="evaluation">
 <p class="guide-kicker">07 / EVALUATION</p>
 <p>Loss evaluates <strong>the quality of predicted probabilities</strong>. A confusion matrix evaluates <strong>hard decisions after thresholding at 0.5</strong>. The notebook reports both on the same training observations, so these are training results—not evidence of generalization to unseen patients.</p>
- <div class="lab"><div class="labhead"><h3>Explore the original confusion matrix</h3><span>Click any cell to inspect its meaning</span></div><div class="labbody">
+ <details class="lab" open>
+  <summary class="labhead"><span class="lab-title">Explore the original confusion matrix</span><span class="lab-description">Click any cell to inspect its meaning</span></summary>
+  <div class="labbody">
   <div class="split"><div>
    <div class="confusion"><div></div><div class="axistag">Predicted 0</div><div class="axistag">Predicted 1</div><div class="axistag">Real 0</div><button type="button" class="cellbutton" data-cell="tn" aria-pressed="false"><strong>167</strong><span>True negative</span></button><button type="button" class="cellbutton err" data-cell="fp" aria-pressed="false"><strong>13</strong><span>False positive</span></button><div class="axistag">Real 1</div><button type="button" class="cellbutton err" data-cell="fn" aria-pressed="false"><strong>20</strong><span>False negative</span></button><button type="button" class="cellbutton" data-cell="tp" aria-pressed="false"><strong>192</strong><span>True positive</span></button></div>
   </div><div class="card" style="background:#f8fbff"><h3 id="confTitle">Choose a cell</h3><p id="confInfo" aria-live="polite" class="small">The diagonal contains correct classifications; the off-diagonal cells contain errors.</p><div class="minitable"><div class="rowpair"><span>Accuracy</span><strong>91.58%</strong></div><div class="rowpair"><span>Precision (class 1)</span><strong>93.66%</strong></div><div class="rowpair"><span>Recall / sensitivity</span><strong>90.57%</strong></div><div class="rowpair"><span>Specificity</span><strong>92.78%</strong></div><div class="rowpair"><span>F1 score</span><strong>92.09%</strong></div></div></div></div>
   <div class="formula">Accuracy  = (TP+TN)/m       = (192+167)/392 ≈ 91.58%
 Precision = TP/(TP+FP)      = 192/205       ≈ 93.66%
 Recall    = TP/(TP+FN)      = 192/212       ≈ 90.57%</div>
- </div></div>
+  </div>
+ </details>
  <div class="grid cols2"><div class="card"><h3>What the notebook truly demonstrates</h3><p>BFGS finds a lower <strong>training</strong> BCE than the prior candidates. The optimized model makes 359 correct hard predictions on the 392 training rows, at the notebook's fixed threshold.</p></div><div class="card"><h3>What you would test next</h3><p>Use held-out test data or cross-validation; examine ROC-AUC, precision–recall trade-offs and calibration, and choose the decision threshold based on the cost of each error. None of those tests were carried out in the Reto 4 notebook.</p></div></div>
 </div>
 
@@ -190,14 +211,17 @@ Recall    = TP/(TP+FN)      = 192/212       ≈ 90.57%</div>
 <div class="logistic-guide" id="compare">
 <p class="guide-kicker">08 / THE FOUR MODELS</p>
 <p>The notebook compares three fixed candidates from Reto 3 with the BFGS solution from Reto 4. They are evaluated on <em>the same</em> Z and t, so their losses are directly comparable.</p>
- <div class="lab"><div class="labhead"><h3>Original notebook values</h3><span>Smaller cross-entropy and gradient norm are preferable here</span></div><div class="labbody">
+ <details class="lab" open>
+  <summary class="labhead"><span class="lab-title">Original notebook values</span><span class="lab-description">Smaller cross-entropy and gradient norm are preferable here</span></summary>
+  <div class="labbody">
   <div class="barrow"><strong>Optimized</strong><div class="bartrack"><div class="barfill best" style="width:32.47%"></div></div><span>0.212164</span></div>
   <div class="barrow"><strong>a</strong><div class="bartrack"><div class="barfill" style="width:33.93%"></div></div><span>0.221731</span></div>
   <div class="barrow"><strong>c</strong><div class="bartrack"><div class="barfill" style="width:60.14%"></div></div><span>0.393056</span></div>
   <div class="barrow"><strong>b</strong><div class="bartrack"><div class="barfill" style="width:100%"></div></div><span>0.653523</span></div>
   <div class="table-scroll" role="region" aria-label="Candidate comparison" tabindex="0"><table class="minitable"><thead><tr><th>Candidate</th><th>Weights (w₁,w₂,w₃)</th><th>‖∇f(w)‖</th><th>Smallest λ(H)</th></tr></thead><tbody><tr><td>Optimized</td><td>(5.1718, 1.6045, 0.5622)</td><td>0.000004</td><td>0.006033</td></tr><tr><td>a</td><td>(4.0364, 1.3192, 0.0603)</td><td>0.027494</td><td>0.011861</td></tr><tr><td>c</td><td>(1.0000, 0.5020, 0.0603)</td><td>0.159099</td><td>0.134484</td></tr><tr><td>b</td><td>(1.3450, 3.5970, 0.5880)</td><td>0.245193</td><td>0.014797</td></tr></tbody></table></div>
   <p class="small">The optimized loss is about <strong>4.31% lower</strong> than candidate a. Every reported Hessian in this comparison is positive definite at the evaluated point. This does not imply all four have equal fit or gradients.</p>
- </div></div>
+  </div>
+ </details>
  <figure class="figurebox"><img src="/articles/inside-logistic-regression/candidate-boundaries.png" loading="lazy" decoding="async" alt="Original notebook graph comparing candidate boundaries with optimized boundary"><figcaption>Original notebook: dashed a/b/c decision boundaries versus the optimized boundary, over the real scatter plot.</figcaption></figure>
 </div>
 

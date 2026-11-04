@@ -1,0 +1,35 @@
+---
+interface Props {
+  headings: { slug: string; text: string }[];
+  language?: 'en' | 'es';
+}
+
+const { headings, language = 'en' } = Astro.props;
+const label = language === 'es' ? 'En esta página' : 'On this page';
+---
+
+<details class="article-toc">
+  <summary>{label}</summary>
+  <nav aria-label={label}>
+    {headings.map((heading) => (
+      <a href={`#${heading.slug}`}>{heading.text}</a>
+    ))}
+  </nav>
+</details>
+
+<script>
+  const wideScreen = window.matchMedia('(min-width: 80rem)');
+  for (const contents of document.querySelectorAll<HTMLDetailsElement>('.article-toc')) {
+    contents.open = wideScreen.matches;
+    contents.addEventListener('click', (event) => {
+      if (wideScreen.matches || !(event.target instanceof HTMLAnchorElement)) return;
+
+      // Focus the destination before hiding the focused link.
+      const heading = document.getElementById(decodeURIComponent(event.target.hash.slice(1)));
+      if (!heading) return;
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+      contents.open = false;
+    });
+  }
+</script>

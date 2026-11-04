@@ -1,0 +1,305 @@
+.logistic-guide {
+  container-type: inline-size;
+  margin-bottom: 3rem;
+}
+
+.logistic-guide .guide-kicker {
+  color: var(--accent-dark);
+  font: 700 0.7rem var(--font-sans);
+  letter-spacing: 0.12em;
+  margin-top: 0;
+}
+
+.logistic-guide :is(.grid, .flow, .controls, .readout, .twochart, .split) {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.logistic-guide :is(.card, .callout, .lab, .qa, .figurebox) {
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: white;
+  padding: 1rem;
+}
+
+.logistic-guide .lab {
+  margin: 1.75rem 0;
+  padding: 0;
+  border-top: 2px solid var(--accent);
+}
+
+.logistic-guide .labhead {
+  padding: 1rem;
+  background: var(--paper-deep);
+  border-bottom: 1px solid var(--line);
+}
+
+.logistic-guide .labbody {
+  padding: 1rem;
+}
+
+.logistic-guide h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.25rem;
+}
+
+.logistic-guide :is(.labhead span, .small, figcaption, .source, .metric .meta) {
+  font-size: 0.875rem;
+  color: #49566d;
+}
+
+.logistic-guide .source {
+  border-left: 2px solid var(--accent);
+  padding: 0.6rem 1rem;
+  margin: 1rem 0;
+  background: var(--paper-deep);
+}
+
+.logistic-guide .metric .name,
+.logistic-guide .reading div:first-child {
+  font: 700 0.7rem/1.4 var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #49566d;
+}
+
+.logistic-guide .metric strong {
+  display: block;
+  font: 400 1.45rem/1.5 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+
+.logistic-guide :is(.equation, .formula) {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.logistic-guide .equation {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.logistic-guide .formula {
+  background: var(--paper-deep);
+  border-left: 2px solid var(--line-dark);
+  font: 0.8rem/1.65 ui-monospace, monospace;
+  white-space: pre-wrap;
+}
+
+.logistic-guide .flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font: 0.8rem/1.5 var(--font-sans);
+}
+
+.logistic-guide .step {
+  flex: 1 1 5rem;
+  background: var(--paper-deep);
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.logistic-guide .arrow { color: var(--accent-dark); }
+.logistic-guide .mathinline { font-style: italic; }
+.logistic-guide .center { text-align: center; }
+
+.logistic-guide .figurebox {
+  margin: 0;
+}
+
+.logistic-guide .figurebox img {
+  display: block;
+  margin: 0 0 0.6rem;
+}
+
+.logistic-guide .chart {
+  display: block;
+  width: 100%;
+  height: 16rem;
+  border: 1px solid var(--line);
+}
+
+.logistic-guide .chart.tall { height: 19rem; }
+
+.logistic-guide :is(.control, .reading, .scorebox) {
+  min-width: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+}
+
+.logistic-guide .control :is(label, .control-label) {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-weight: 700;
+}
+
+.logistic-guide .control output { color: var(--accent-dark); }
+
+.logistic-guide .control :is(input, select) {
+  display: block;
+  width: 100%;
+  margin: 0.35rem 0 0;
+  min-height: 2rem;
+  font: inherit;
+  accent-color: var(--accent);
+}
+
+.logistic-guide .reading strong {
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.logistic-guide .reading small { display: block; }
+
+.logistic-guide .buttonrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.75rem 0;
+}
+
+.logistic-guide :is(.btn, .cellbutton) {
+  border: 1px solid var(--line-dark);
+  padding: 0.5rem 0.7rem;
+  min-height: 2.75rem;
+  background: white;
+  color: var(--ink);
+  font: 700 0.78rem/1.35 var(--font-sans);
+  cursor: pointer;
+}
+
+.logistic-guide :is(.btn, .cellbutton):hover { border-color: var(--accent); }
+
+.logistic-guide .btn.primary {
+  background: var(--accent-dark);
+  color: white;
+  border-color: var(--accent-dark);
+}
+
+.logistic-guide :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.logistic-guide .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.8rem;
+  margin-top: 0.5rem;
+  font: 0.75rem/1.4 var(--font-sans);
+}
+
+.logistic-guide .dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.3rem;
+  border-radius: 50%;
+}
+
+.logistic-guide .confusion {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 0.35rem;
+  align-items: stretch;
+  font: 0.72rem/1.4 var(--font-sans);
+}
+
+.logistic-guide .axistag {
+  align-self: center;
+  text-align: center;
+}
+
+.logistic-guide .cellbutton {
+  background: #e9f6f1;
+  color: #095a46;
+  padding: 0.5rem 0.25rem;
+}
+
+.logistic-guide .cellbutton strong {
+  display: block;
+  font-size: 1.4rem;
+}
+
+.logistic-guide .cellbutton.err {
+  background: #fff0f2;
+  color: #8f3043;
+}
+
+.logistic-guide .cellbutton.active {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.logistic-guide .rowpair {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font: 0.8rem/1.6 var(--font-sans);
+}
+
+.logistic-guide .barrow {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr) 4rem;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.6rem 0;
+  font: 0.8rem var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+
+.logistic-guide .bartrack {
+  height: 0.75rem;
+  background: var(--paper-deep);
+}
+
+.logistic-guide .barfill {
+  height: 100%;
+  background: var(--accent);
+}
+
+.logistic-guide .barfill.best { background: #0b765d; }
+
+.logistic-guide .table-scroll {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.logistic-guide .minitable { margin: 0; }
+.logistic-guide .minitable td { font-variant-numeric: tabular-nums; }
+
+.logistic-guide .qa { margin: 0.6rem 0; }
+.logistic-guide .qa summary { cursor: pointer; }
+.logistic-guide .ans { padding-top: 0.6rem; }
+
+.logistic-guide .code {
+  background: var(--paper);
+  margin: 0;
+}
+
+.logistic-guide .code .kw { color: #1746a2; }
+.logistic-guide .code .fn { color: #095a46; }
+
+@container (min-width: 32rem) {
+  .logistic-guide :is(.cols2, .twochart, .split, .controls-pair) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .logistic-guide :is(.cols3, .controls:not(.controls-pair), .readout) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media print {
+  .logistic-guide :is(.controls, .buttonrow) { display: none; }
+  .logistic-guide :is(.lab, .figurebox) { break-inside: avoid; }
+}

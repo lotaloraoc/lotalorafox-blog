@@ -30,44 +30,59 @@ const links = language === 'es'
 const rssHref = language === 'es' ? '/es/rss.xml' : '/rss.xml';
 ---
 
-<aside class="sidebar">
+<header class="sidebar">
   <div class="sidebar-inner">
     <Mark />
-
-    <nav aria-label="Primary navigation">
-      {links.map((link) => (
-        <a
-          href={link.href}
-          class:list={{ active: link.href === '/' ? path === '/' : path.startsWith(link.href) }}
-        >
-          {link.label}
-        </a>
-      ))}
-      <a href={rssHref}>RSS</a>
-      <a class="language-switch" href={languageHref} hreflang={language === 'es' ? 'en' : 'es'}>
-        {language === 'es' ? 'English' : 'Español'}
-      </a>
-    </nav>
-
-    <div class="sidebar-socials" aria-label="Social profiles">
-      {siteConfig.socialLinks.map((link) => (
-        <a href={link.href} target="_blank" rel="noreferrer">
-          {link.label} <span aria-hidden="true">↗</span>
-        </a>
-      ))}
-    </div>
+    <details class="site-menu">
+      <summary>{language === 'es' ? 'Menú' : 'Menu'}</summary>
+      <div class="sidebar-panel">
+        <nav aria-label={language === 'es' ? 'Navegación principal' : 'Primary navigation'}>
+          {links.map((link) => (
+            <a
+              href={link.href}
+              class:list={{ active: link.href === '/' ? path === '/' : path.startsWith(link.href) }}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a href={rssHref}>RSS</a>
+          <a class="language-switch" href={languageHref} hreflang={language === 'es' ? 'en' : 'es'}>
+            {language === 'es' ? 'English' : 'Español'}
+          </a>
+        </nav>
+        <div class="sidebar-socials" aria-label={language === 'es' ? 'Perfiles sociales' : 'Social profiles'}>
+          {siteConfig.socialLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noreferrer">
+              {link.label} <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </details>
   </div>
-</aside>
-
-<header class="mobile-header">
-  <Mark compact />
-  <a class="mobile-name" href="/">{siteConfig.shortName}</a>
-  <nav aria-label="Mobile navigation">
-    <a href={language === 'es' ? '/es/articulos/' : '/articles/'}>
-      {language === 'es' ? 'Artículos' : 'Articles'}
-    </a>
-    <a href={languageHref} hreflang={language === 'es' ? 'en' : 'es'}>
-      {language === 'es' ? 'EN' : 'ES'}
-    </a>
-  </nav>
 </header>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('.site-menu');
+  const wideScreen = window.matchMedia('(min-width: 80rem)');
+
+  if (menu) {
+    const summary = menu.querySelector('summary');
+    menu.open = wideScreen.matches;
+    wideScreen.addEventListener('change', (event) => {
+      if (!event.matches && menu.contains(document.activeElement)) summary?.focus();
+      menu.open = event.matches;
+    });
+    menu.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !menu.open) return;
+      menu.open = false;
+      summary?.focus();
+    });
+    menu.addEventListener('click', (event) => {
+      if (!wideScreen.matches && event.target instanceof Element && event.target.closest('a')) {
+        menu.open = false;
+        summary?.focus({ preventScroll: true });
+      }
+    });
+  }
+</script>

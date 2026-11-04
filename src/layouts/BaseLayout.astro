@@ -68,7 +68,7 @@ const socialImage = new URL(image, Astro.site ?? siteConfig.siteUrl);
           startOnLoad: false,
           theme: 'base',
           securityLevel: 'strict',
-          fontFamily: 'Arial, sans-serif',
+          fontFamily: getComputedStyle(document.documentElement).getPropertyValue('--font-sans').trim(),
           themeVariables: {
             background: '#f6f8fb',
             primaryColor: '#e5ebf5',

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleContents from '../../components/ArticleContents.astro';
 import { formatDate } from '../../lib/articles';
 import { siteConfig } from '../../config';
 
@@ -54,15 +55,8 @@ const hasToc = tocHeadings.length > 0;
       </div>
     </header>
 
-    <div class:list={['article-body-wrap', 'section-frame', { 'has-toc': hasToc }]}>
-      {hasToc && (
-        <aside class="article-toc" aria-label="Table of contents">
-          <p>On this page</p>
-          {tocHeadings.map((heading) => (
-            <a href={`#${heading.slug}`}>{heading.text}</a>
-          ))}
-        </aside>
-      )}
+    <div class="article-body-wrap section-frame">
+      {hasToc && <ArticleContents headings={tocHeadings} />}
       <div class="prose">
         <Content />
       </div>

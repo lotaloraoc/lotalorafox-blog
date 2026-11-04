@@ -33,7 +33,22 @@
 .logistic-guide .labhead {
   padding: 1rem;
   background: var(--paper-deep);
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
+.logistic-guide .lab[open] .labhead {
   border-bottom: 1px solid var(--line);
+}
+
+.logistic-guide .lab-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.logistic-guide .lab-description {
+  display: block;
+  margin: 0.35rem 0 0 1.1rem;
 }
 
 .logistic-guide .labbody {
@@ -45,7 +60,7 @@
   font-size: 1.25rem;
 }
 
-.logistic-guide :is(.labhead span, .small, figcaption, .source, .metric .meta) {
+.logistic-guide :is(.lab-description, .small, figcaption, .source, .metric .meta) {
   font-size: 0.875rem;
   color: #49566d;
 }
@@ -85,7 +100,7 @@
 .logistic-guide .formula {
   background: var(--paper-deep);
   border-left: 2px solid var(--line-dark);
-  font: 0.8rem/1.65 ui-monospace, monospace;
+  font: 0.8rem/1.65 var(--font-mono);
   white-space: pre-wrap;
 }
 
@@ -131,7 +146,7 @@
   border: 1px solid var(--line);
   padding: 0.65rem;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .logistic-guide .control :is(label, .control-label) {
@@ -174,7 +189,7 @@
   min-height: 2.75rem;
   background: white;
   color: var(--ink);
-  font: 700 0.78rem/1.35 var(--font-sans);
+  font: 650 0.875rem/1.35 var(--font-sans);
   cursor: pointer;
 }
 
@@ -196,7 +211,7 @@
   flex-wrap: wrap;
   gap: 0.2rem 0.8rem;
   margin-top: 0.5rem;
-  font: 0.75rem/1.4 var(--font-sans);
+  font: 0.875rem/1.5 var(--font-sans);
 }
 
 .logistic-guide .dot {
@@ -244,7 +259,7 @@
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
-  font: 0.8rem/1.6 var(--font-sans);
+  font: 0.875rem/1.6 var(--font-sans);
 }
 
 .logistic-guide .barrow {
@@ -278,7 +293,10 @@
 .logistic-guide .minitable td { font-variant-numeric: tabular-nums; }
 
 .logistic-guide .qa { margin: 0.6rem 0; }
-.logistic-guide .qa summary { cursor: pointer; }
+.logistic-guide .qa summary {
+  font: 600 1rem/1.5 var(--font-sans);
+  cursor: pointer;
+}
 .logistic-guide .ans { padding-top: 0.6rem; }
 
 .logistic-guide .code {

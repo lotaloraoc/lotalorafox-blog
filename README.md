@@ -31,6 +31,16 @@ flowchart LR
 
 Set `draft: true` to keep an article out of production builds.
 
+Use LaTeX math with `$p = \sigma(s)$` inline, or a display block:
+
+```markdown
+$$
+\nabla f(w) = \frac{Z^{\mathsf T}(y-t)}{m}
+$$
+```
+
+KaTeX renders equations during the build and serves its fonts locally.
+
 ## Add a Spanish translation
 
 Create the translated Markdown file under `src/content/articles/es/`. Give both language versions the same `translationKey`, and set the Spanish file to `language: "es"`. The site generates `/articles/...` and `/es/articulos/...` routes and links both versions through the language selector.

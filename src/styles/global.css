@@ -711,3 +711,52 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Wide equations scroll within the reading column, including nested lab cards. */
+.prose .math-block {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  margin: 1.25rem 0;
+  padding: 1rem 0.75rem;
+  border-block: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.prose .katex {
+  font-size: 1.05em;
+  line-height: 1.4;
+  text-indent: 0;
+}
+
+.prose .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.35rem;
+  margin: 1rem 0;
+}
+
+.prose .math-block .katex-display {
+  max-width: none;
+  width: max-content;
+  min-width: 100%;
+  overflow: visible;
+  margin: 0;
+}
+
+.prose .katex-display > .katex {
+  white-space: nowrap;
+}
+
+.prose .card .math-block {
+  font-size: 0.95em;
+  padding-inline: 0.35rem;
+}
+
+@media print {
+  .prose .math-block {
+    break-inside: avoid;
+  }
+}

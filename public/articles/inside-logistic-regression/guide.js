@@ -158,6 +158,12 @@ function updateDot() {
   $('vx2o').textContent = fmt(x2, 2);
   $('dotstep').textContent =
     `(${fmt(OPT[0], 4)} × ${fmt(x1, 2)}) + (${fmt(OPT[1], 4)} × ${fmt(x2, 2)}) + ${fmt(OPT[2], 4)} = ${fmt(s, 5)}`;
+  $('dotstep').dataset.liveMath = String.raw`\begin{aligned}
+    s &= \underbrace{${fmt(OPT[0], 4)}(${fmt(x1, 2)})}_{w_1 x_1}
+       + \underbrace{${fmt(OPT[1], 4)}(${fmt(x2, 2)})}_{w_2 x_2} \\
+      &\quad + \underbrace{${fmt(OPT[2], 4)}}_{w_3} \\
+      &\approx ${fmt(s, 5)}
+    \end{aligned}`;
   $('dotS').textContent = fmt(s, 4);
   $('dotP').textContent = fmt(sigmoid(s) * 100, 2) + '%';
   $('dotY').textContent = s >= 0 ? '1' : '0';

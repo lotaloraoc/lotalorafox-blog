@@ -25,7 +25,7 @@ The interactive labs run in your browser with JavaScript and local assets.
   <div class="card metric"><div class="name">Original → final loss</div><strong>0.6931 → 0.2122</strong><div class="meta">Binary cross-entropy · 20 BFGS iterations</div></div>
   <div class="card metric"><div class="name">Training accuracy</div><strong>91.58%</strong><div class="meta">359 correct · 33 errors</div></div>
  </div>
- <div class="equation">w* = (5.17176466, 1.60446794, 0.56221445)ᵀ</div>
+ <div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">w^* = \begin{pmatrix} 5.17176466 \\ 1.60446794 \\ 0.56221445 \end{pmatrix}</div></div>
  <div class="flow"><div class="step">raw observations<br><small>392 × 2</small></div><div class="arrow">→</div><div class="step">add bias column<br><small>Z: 392 × 3</small></div><div class="arrow">→</div><div class="step">scores &amp; probabilities</div><div class="arrow">→</div><div class="step">cross-entropy f(w)</div><div class="arrow">→</div><div class="step">minimize over w ∈ ℝ³</div></div>
  <div class="source"><strong>Source: Reto4LuisOtalora.html.</strong> These numerical results and the original figures below come from the Reto 4 notebook. The interactive point-cloud and optimizer experiments later in this guide use a small explicitly labeled <strong>teaching dataset</strong>; the 392 original CSV rows are not embedded in the notebook HTML.</div>
  <div class="grid cols2">
@@ -38,15 +38,10 @@ The interactive labs run in your browser with JavaScript and local assets.
 
 <div class="logistic-guide" id="vectors">
 <p class="guide-kicker">01 / LINEAR ALGEBRA</p>
-<p>Each observation begins as a 2D feature vector <span class="mathinline">x = (x₁, x₂)ᵀ</span>. The notebook appends a constant 1, producing a 3D augmented vector <span class="mathinline">z = (x₁, x₂, 1)ᵀ</span>. That extra coordinate lets the model learn an intercept without a separate operation.</p>
+<p>Each observation begins as a 2D feature vector <span class="math-inline">x = (x_1, x_2)^{\mathsf T}</span>. The notebook appends a constant 1, producing a 3D augmented vector <span class="math-inline">z = (x_1, x_2, 1)^{\mathsf T}</span>. That extra coordinate lets the model learn an intercept without a separate operation.</p>
  <div class="grid cols2">
-  <div class="card"><h3>One observation</h3><div class="formula">zᵢ = [x₁ᵢ, x₂ᵢ, 1]ᵀ       shape (3,)
-w  = [w₁,  w₂,  w₃]ᵀ      shape (3,)
-sᵢ = wᵀzᵢ = w₁x₁ᵢ + w₂x₂ᵢ + w₃</div><p class="small">The output <strong>sᵢ</strong> is a scalar called a <em>logit</em> or score. Geometrically, w₁ and w₂ define the orientation of a line; w₃ translates it.</p></div>
-  <div class="card"><h3>All observations simultaneously</h3><div class="formula">Z ∈ ℝ³⁹²ˣ³     w ∈ ℝ³      s ∈ ℝ³⁹²
-Z @ w       → 392 logits
-σ(Z @ w)    → 392 probabilities
-Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is one observation. Each column is a model input (two features and a constant).</p></div>
+  <div class="card"><h3>One observation</h3><div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\begin{aligned} z_i &amp;= \begin{pmatrix} x_{1i} \\ x_{2i} \\ 1 \end{pmatrix},\quad w = \begin{pmatrix} w_1 \\ w_2 \\ w_3 \end{pmatrix} \\ s_i &amp;= w^{\mathsf T}z_i \\ &amp;= w_1 x_{1i} + w_2 x_{2i} + w_3 \end{aligned}</div></div><p class="small">The output <strong>sᵢ</strong> is a scalar called a <em>logit</em> or score. Geometrically, w₁ and w₂ define the orientation of a line; w₃ translates it.</p></div>
+  <div class="card"><h3>All observations simultaneously</h3><div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\begin{aligned} Z &amp;\in \mathbb{R}^{392\times 3} \\ w &amp;\in \mathbb{R}^3,\quad s \in \mathbb{R}^{392} \\ Zw &amp;\longrightarrow 392\text{ logits} \\ \sigma(Zw) &amp;\longrightarrow 392\text{ probabilities} \\ Z^{\mathsf T}(y-t) &amp;\in \mathbb{R}^3 \end{aligned}</div></div><p class="small">Each row of Z is one observation. Each column is a model input (two features and a constant).</p></div>
  </div>
  <details class="lab" open>
   <summary class="labhead"><span class="lab-title">Try a matrix multiplication by hand</span><span class="lab-description">Use the sliders to change one augmented row</span></summary>
@@ -56,20 +51,20 @@ Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is 
    <div class="control"><label for="vx2">x₂ <output id="vx2o">-0.80</output></label><input id="vx2" type="range" min="-2" max="2" step="0.05" value="-0.8"></div>
    <div class="control"><div class="control-label">Bias coordinate <span>1 (fixed)</span></div><div style="font-size:12px;color:#6a7e98;margin-top:10px">A 1 multiplies the intercept w₃.</div></div>
   </div>
-  <div class="formula" id="dotstep" aria-live="polite">(5.1718 × 0.70) + (1.6045 × −0.80) + 0.5622 = 2.9000</div>
+  <div class="math-block" id="dotstep" role="region" aria-label="Dot product calculation" tabindex="0" aria-live="polite" data-live-math="s = 5.1718(0.70) + 1.6045(-0.80) + 0.5622"><div class="math-display">\begin{aligned} s &amp;= 5.1718(0.70) + 1.6045(-0.80) + 0.5622 \\ &amp;\approx 2.89888 \end{aligned}</div></div>
   <div class="readout"><div class="reading"><div>Logit s</div><strong id="dotS">—</strong></div><div class="reading"><div>Probability σ(s)</div><strong id="dotP">—</strong></div><div class="reading"><div>Prediction ≥ 0.5</div><strong id="dotY">—</strong></div></div>
   <p class="small">This is a synthetic example feature vector evaluated with the <strong>actual optimized weights</strong>. Its computed probability is illustrative, not a record taken from the original dataset.</p>
   </div>
  </details>
- <div class="callout"><strong>Why matrix notation matters:</strong> NumPy can calculate every score with a single <code>Z @ w</code>. More importantly, derivatives become compact: <strong>∇f(w) = Zᵀ(y − t)/m</strong> and <strong>H(w) = ZᵀDZ/m</strong>. Both are built from the same matrix Z.</div>
+ <div class="callout"><strong>Why matrix notation matters:</strong> NumPy can calculate every score with a single <code>Z @ w</code>. More importantly, derivatives become compact: <span class="math-inline">\nabla f(w) = \frac{Z^{\mathsf T}(y-t)}{m}</span> and <span class="math-inline">H(w) = \frac{Z^{\mathsf T}DZ}{m}</span>. Both are built from the same matrix Z.</div>
 </div>
 
 ## Three coefficients determine one straight line
 
 <div class="logistic-guide" id="boundary">
 <p class="guide-kicker">02 / FEATURE SPACE</p>
-<p>Logistic regression is called “regression”, but the notebook uses it for binary classification. First compute <span class="mathinline">s = w₁x₁ + w₂x₂ + w₃</span>; then turn it into <span class="mathinline">p = σ(s) = 1/(1+e⁻ˢ)</span>. The class threshold of 0.5 corresponds exactly to <strong>s = 0</strong>.</p>
- <div class="equation">w₁x₁ + w₂x₂ + w₃ = 0 &nbsp; ⟺ &nbsp; x₂ = −(w₁/w₂)x₁ − w₃/w₂</div>
+<p>Logistic regression is called “regression”, but the notebook uses it for binary classification. First compute <span class="math-inline">s = w_1 x_1 + w_2 x_2 + w_3</span>; then turn it into <span class="math-inline">p = \sigma(s) = \frac{1}{1 + e^{-s}}</span>. The class threshold of 0.5 corresponds exactly to <strong>s = 0</strong>.</p>
+ <div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\begin{aligned} w_1 x_1 + w_2 x_2 + w_3 &amp;= 0 \\ x_2 &amp;= -\frac{w_1}{w_2}x_1 - \frac{w_3}{w_2} \end{aligned}</div></div>
  <details class="lab" open>
   <summary class="labhead"><span class="lab-title">Interactive decision boundary</span><span class="lab-description">Teaching dataset · not the original 392 records</span></summary>
   <div class="labbody">
@@ -92,8 +87,8 @@ Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is 
 
 <div class="logistic-guide" id="loss">
 <p class="guide-kicker">03 / PROBABILITY &amp; LOSS</p>
-<p>We want high probability on the true class, not just the right side of a threshold. With a Bernoulli model, the likelihood of label <span class="mathinline">t ∈ {0,1}</span> is <span class="mathinline">pᵗ(1−p)¹⁻ᵗ</span>. Minimizing negative log-likelihood gives the <strong>binary cross-entropy (BCE)</strong> used in the notebook.</p>
- <div class="equation">ℓ(p,t) = −t log(p) − (1−t) log(1−p)</div>
+<p>We want high probability on the true class, not just the right side of a threshold. With a Bernoulli model, the likelihood of label <span class="math-inline">t \in \{0,1\}</span> is <span class="math-inline">p^t (1-p)^{1-t}</span>. Minimizing negative log-likelihood gives the <strong>binary cross-entropy (BCE)</strong> used in the notebook.</p>
+ <div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\ell(p,t) = -t\log p - (1-t)\log(1-p)</div></div>
  <details class="lab" open>
   <summary class="labhead"><span class="lab-title">One prediction, two loss choices</span><span class="lab-description">Compare BCE vs squared probability error</span></summary>
   <div class="labbody">
@@ -110,7 +105,7 @@ Z.T @ (y−t) → 3 gradient coordinates</div><p class="small">Each row of Z is 
  <div class="formula"># Original stable implementation
 s = Z @ w
 loss = np.mean(np.logaddexp(0.0, s) - t * s)</div>
- <p><strong>Why <code>np.logaddexp</code>?</strong> It computes <span class="mathinline">log(1+eˢ)</span> stably even for very large positive s. Algebraically, <span class="mathinline">ℓ(s,t) = log(1+eˢ) − ts</span> is exactly the same BCE, expressed in logits. A direct <code>np.log(1+np.exp(s))</code> may overflow. The notebook stabilizes its loss; for very extreme logits the standalone sigmoid could also be implemented more robustly with <code>scipy.special.expit</code>.</p>
+ <p><strong>Why <code>np.logaddexp</code>?</strong> It computes <span class="math-inline">\log(1+e^s)</span> stably even for very large positive s. Algebraically, <span class="math-inline">\ell(s,t) = \log(1+e^s) - ts</span> is exactly the same BCE, expressed in logits. A direct <code>np.log(1+np.exp(s))</code> may overflow. The notebook stabilizes its loss; for very extreme logits the standalone sigmoid could also be implemented more robustly with <code>scipy.special.expit</code>.</p>
 </div>
 
 ## Why is the loss a convex curve, and why is that powerful?
@@ -118,7 +113,7 @@ loss = np.mean(np.logaddexp(0.0, s) - t * s)</div>
 <div class="logistic-guide" id="convexity">
 <p class="guide-kicker">04 / CONVEX ANALYSIS</p>
 <p>A convex function lies <strong>at or below</strong> the straight chord connecting any two points on its graph. For a twice differentiable one-variable function, a nonnegative second derivative everywhere is enough to prove convexity. Logistic cross-entropy satisfies that condition as a function of the logit.</p>
- <div class="equation">ℓ″(s,t) = σ(s)(1 − σ(s)) ≥ 0</div>
+ <div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\ell^{\prime\prime}(s,t) = \sigma(s)\bigl(1 - \sigma(s)\bigr) \geq 0</div></div>
  <details class="lab" open>
   <summary class="labhead"><span class="lab-title">Move the chord: visualize Jensen's inequality</span><span class="lab-description">Experiment with BCE and an alternative</span></summary>
   <div class="labbody">
@@ -129,8 +124,8 @@ loss = np.mean(np.logaddexp(0.0, s) - t * s)</div>
   <p class="small" id="convexCaption" aria-live="polite"></p>
   </div>
  </details>
- <div class="grid cols2"><div class="card"><h3>From a convex curve to a convex surface</h3><p>Every logit <span class="mathinline">sᵢ = zᵢᵀw</span> is <em>affine</em> in w. A convex loss composed with an affine function remains convex. An average of convex functions remains convex. Therefore, <strong>f(w)</strong> is convex throughout ℝ³.</p></div><div class="card"><h3>Why the sigmoid isn't the convex object</h3><p>The sigmoid is S-shaped: it changes curvature. Its graph is <strong>not globally convex</strong>. What is convex is <em>cross-entropy applied to the linear score</em> as a function of the parameters. Squared error applied to sigmoid probabilities generally loses this guarantee.</p></div></div>
- <div class="callout"><strong>Global-minimum guarantee:</strong> For a differentiable convex f, any stationary point (<span class="mathinline">∇f(w) = 0</span>) is a global minimizer. With the notebook's full-rank design matrix and finite weights, the logistic Hessian is positive definite, making the objective strictly convex and its finite minimizer unique. Convexity does not mean BFGS magically reaches the solution in one step, or that the training loss becomes zero.</div>
+ <div class="grid cols2"><div class="card"><h3>From a convex curve to a convex surface</h3><p>Every logit <span class="math-inline">s_i = z_i^{\mathsf T} w</span> is <em>affine</em> in w. A convex loss composed with an affine function remains convex. An average of convex functions remains convex. Therefore, <strong>f(w)</strong> is convex throughout ℝ³.</p></div><div class="card"><h3>Why the sigmoid isn't the convex object</h3><p>The sigmoid is S-shaped: it changes curvature. Its graph is <strong>not globally convex</strong>. What is convex is <em>cross-entropy applied to the linear score</em> as a function of the parameters. Squared error applied to sigmoid probabilities generally loses this guarantee.</p></div></div>
+ <div class="callout"><strong>Global-minimum guarantee:</strong> For a differentiable convex f, any stationary point (<span class="math-inline">\nabla f(w) = 0</span>) is a global minimizer. With the notebook's full-rank design matrix and finite weights, the logistic Hessian is positive definite, making the objective strictly convex and its finite minimizer unique. Convexity does not mean BFGS magically reaches the solution in one step, or that the training loss becomes zero.</div>
 </div>
 
 ## What exactly happens inside `minimize`?
@@ -139,9 +134,8 @@ loss = np.mean(np.logaddexp(0.0, s) - t * s)</div>
 <p class="guide-kicker">05 / THE OPTIMIZER</p>
 <p>The notebook calls <code>minimize(perdida, w0, args=(Z, t), callback=guardar_perdida)</code>. Because there are no bounds, constraints, Jacobian or method specified, SciPy chooses <strong>BFGS</strong> by default for this unconstrained problem, numerically approximates derivatives and iteratively improves w.</p>
  <div class="grid cols2">
-  <div class="card"><h3>Gradient descent: useful baseline</h3><div class="formula">wₖ₊₁ = wₖ − α ∇f(wₖ)</div><p>It follows the local steepest-descent direction. The step-size α affects stability: too small is slow; too large can overshoot.</p></div>
-  <div class="card"><h3>BFGS: the notebook's method</h3><div class="formula">pₖ ≈ −Bₖ ∇f(wₖ)
-wₖ₊₁ = wₖ + αₖ pₖ</div><p>Bₖ is a changing approximation of the <em>inverse Hessian</em>. BFGS adapts to curvature and uses a line search. It does <strong>not</strong> require you to supply the true Hessian.</p></div>
+  <div class="card"><h3>Gradient descent: useful baseline</h3><div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">w_{k+1} = w_k - \alpha\nabla f(w_k)</div></div><p>It follows the local steepest-descent direction. The step-size α affects stability: too small is slow; too large can overshoot.</p></div>
+  <div class="card"><h3>BFGS: the notebook's method</h3><div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\begin{aligned} p_k &amp;\approx -B_k\nabla f(w_k) \\ w_{k+1} &amp;= w_k + \alpha_k p_k \end{aligned}</div></div><p>Bₖ is a changing approximation of the <em>inverse Hessian</em>. BFGS adapts to curvature and uses a line search. It does <strong>not</strong> require you to supply the true Hessian.</p></div>
  </div>
  <div class="flow"><div class="step">Start<br>w₀ = (0,0,0)</div><div class="arrow">→</div><div class="step">Evaluate<br>f(wₖ)</div><div class="arrow">→</div><div class="step">Estimate<br>∇f(wₖ)</div><div class="arrow">→</div><div class="step">Find direction<br>and line-search step</div><div class="arrow">→</div><div class="step">Update w,<br>check stop</div></div>
  <details class="lab" open>
@@ -155,23 +149,20 @@ wₖ₊₁ = wₖ + αₖ pₖ</div><p>Bₖ is a changing approximation of the <
    <p class="small"><strong>Important:</strong> This executes a minimal gradient-descent or inverse-Hessian BFGS <em>demonstration in JavaScript</em> on deterministic toy observations. SciPy's production BFGS has a more sophisticated line search, stopping conditions and derivative approximations. The notebook's actual run is still the separate 20-iteration plot above.</p>
   </div>
  </details>
- <div class="grid cols2"><div class="card"><h3>What is saved by the callback?</h3><p>The notebook initializes <code>historial_f = [perdida(w0,Z,t)]</code> manually and appends a loss each time the callback receives an updated vector. <code>callback</code> is for observation/recording; it does <strong>not</strong> change the mathematical objective.</p></div><div class="card"><h3>Why did it stop?</h3><p>Its output reports <code>success=True</code>, 20 iterations, <span class="mathinline">f(w*) = 0.212163898</span>, and <span class="mathinline">‖∇f(w*)‖ ≈ 4.16×10⁻⁶</span>. A small gradient indicates little first-order improvement remains; combined with convexity, this supports a global minimizer.</p></div></div>
+ <div class="grid cols2"><div class="card"><h3>What is saved by the callback?</h3><p>The notebook initializes <code>historial_f = [perdida(w0,Z,t)]</code> manually and appends a loss each time the callback receives an updated vector. <code>callback</code> is for observation/recording; it does <strong>not</strong> change the mathematical objective.</p></div><div class="card"><h3>Why did it stop?</h3><p>Its output reports <code>success=True</code>, 20 iterations, <span class="math-inline">f(w^*) = 0.212163898</span>, and <span class="math-inline">\|\nabla f(w^*)\| \approx 4.16 \times 10^{-6}</span>. A small gradient indicates little first-order improvement remains; combined with convexity, this supports a global minimizer.</p></div></div>
 </div>
 
 ## The gradient is a direction; the Hessian is a curvature map
 
 <div class="logistic-guide" id="hessian">
 <p class="guide-kicker">06 / DIFFERENTIAL GEOMETRY</p>
-<p>The notebook derives the gradient and Hessian analytically for <span class="mathinline">f(w)</span>. The gradient is a 3-vector indicating how sensitive the loss is to each coefficient. The Hessian is a symmetric 3×3 matrix describing how the gradient changes as we move in parameter space.</p>
- <div class="formula">y = σ(Zw)                 shape: (392,)
-∇f(w) = Zᵀ(y − t)/392     shape: (3,)
-D = diag(yᵢ(1−yᵢ))       shape: (392, 392)
-H(w) = Zᵀ D Z / 392      shape: (3, 3)</div>
- <div class="callout"><strong>Proof that Hessian is positive semidefinite:</strong> for any v ∈ ℝ³,<div class="equation">vᵀH(w)v = (1/392) Σᵢ yᵢ(1−yᵢ)(zᵢᵀv)² ≥ 0.</div>Every term is nonnegative. At finite w, all yᵢ(1−yᵢ) are strictly positive mathematically, and because the notebook reports <span class="mathinline">rank(Z) = 3</span>, this expression is positive for every v ≠ 0. That is the deeper reason for strict convexity here—not merely that three eigenvalues happened to be positive at the final point.</div>
+<p>The notebook derives the gradient and Hessian analytically for <span class="math-inline">f(w)</span>. The gradient is a 3-vector indicating how sensitive the loss is to each coefficient. The Hessian is a symmetric 3×3 matrix describing how the gradient changes as we move in parameter space.</p>
+ <div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\begin{aligned} y &amp;= \sigma(Zw) \in \mathbb{R}^{392} \\ \nabla f(w) &amp;= \frac{Z^{\mathsf T}(y-t)}{392} \in \mathbb{R}^3 \\ D &amp;= \operatorname{diag}\bigl(y_i(1-y_i)\bigr) \\ H(w) &amp;= \frac{Z^{\mathsf T}DZ}{392} \in \mathbb{R}^{3\times 3} \end{aligned}</div></div>
+ <div class="callout"><strong>Proof that Hessian is positive semidefinite:</strong> for any v ∈ ℝ³,<div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\begin{aligned} v^{\mathsf T} H(w) v &amp;= \frac{1}{392}\sum_{i=1}^{392} y_i(1-y_i)(z_i^{\mathsf T}v)^2 \\ &amp;\geq 0 \end{aligned}</div></div>Every term is nonnegative. At finite w, all yᵢ(1−yᵢ) are strictly positive mathematically, and because the notebook reports <span class="math-inline">\operatorname{rank}(Z) = 3</span>, this expression is positive for every v ≠ 0. That is the deeper reason for strict convexity here—not merely that three eigenvalues happened to be positive at the final point.</div>
  <details class="lab" open>
   <summary class="labhead"><span class="lab-title">Walk around the convex bowl</span><span class="lab-description">Second-order Taylor approximation at the <em>actual</em> notebook optimum</span></summary>
   <div class="labbody">
-  <p class="small">Fix w₃ at its optimized value. Move w₁ and w₂ near w*. Using the <strong>actual Hessian matrix</strong>, the local loss is approximated by <span class="mathinline">f(w*+δ) ≈ f(w*) + ∇f(w*)ᵀδ + ½δᵀH*δ</span>. The colors and ellipses are <strong>not exact global loss contours</strong> because the original 392 CSV rows are absent from this HTML.</p>
+  <p class="small">Fix w₃ at its optimized value. Move w₁ and w₂ near w*. Using the <strong>actual Hessian matrix</strong>, the local loss is approximated by <span class="math-inline">f(w^* + \delta) \approx f(w^*) + \nabla f(w^*)^{\mathsf T}\delta + \tfrac12 \delta^{\mathsf T}H^*\delta</span>. The colors and ellipses are <strong>not exact global loss contours</strong> because the original 392 CSV rows are absent from this HTML.</p>
   <canvas role="img" id="bowlChart" class="chart tall" aria-label="Local quadratic bowl contour around actual optimum"></canvas>
   <div class="controls controls-pair"><div class="control"><label for="delta1">Δw₁ from optimum <output id="delta1o">2.00</output></label><input id="delta1" type="range" min="-5" max="5" step="0.1" value="2"></div><div class="control"><label for="delta2">Δw₂ from optimum <output id="delta2o">1.00</output></label><input id="delta2" type="range" min="-4" max="4" step="0.1" value="1"></div></div>
   <div class="readout"><div class="reading"><div>Approx. local f(w)</div><strong id="bowlLoss">—</strong></div><div class="reading"><div>Approx. gradient norm</div><strong id="bowlGrad">—</strong></div><div class="reading"><div>Δw = (Δw₁,Δw₂,0)</div><strong id="bowlDelta">—</strong></div></div>
@@ -179,12 +170,8 @@ H(w) = Zᵀ D Z / 392      shape: (3, 3)</div>
   <p class="small" id="bowlNote" aria-live="polite"></p>
   </div>
  </details>
- <div class="grid cols2"><div class="card"><h3>Real Hessian at w*</h3><div class="formula">[ 0.012118  −0.015377  −0.012501 ]
-[−0.015377   0.059502   0.009306 ]
-[−0.012501   0.009306   0.065703 ]</div><p class="small">Off-diagonal terms describe interaction between parameters; symmetry follows from continuous mixed partial derivatives.</p></div><div class="card"><h3>Actual Hessian eigenvalues</h3><div class="formula">λ₁ = 0.00603294
-λ₂ = 0.05323680
-λ₃ = 0.07805335</div><p class="small">All positive → <strong>positive definite at w*</strong>. Eigenvectors identify principal directions; eigenvalues measure curvature along them. A small eigenvalue means a relatively flat direction.</p></div></div>
- <p>Remember: <span class="mathinline">∇f(w*) ≈ (−1.06×10⁻⁶, 3.52×10⁻⁶, 1.97×10⁻⁶)</span> is small but not exactly zero because this is numerical optimization. The Hessian is <strong>not</strong> expected to be zero at the minimum; a positive Hessian is the signature of an upward-curving valley.</p>
+ <div class="grid cols2"><div class="card"><h3>Real Hessian at w*</h3><div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">H(w^*) \approx \begin{pmatrix} 0.012118 &amp; -0.015377 &amp; -0.012501 \\ -0.015377 &amp; 0.059502 &amp; 0.009306 \\ -0.012501 &amp; 0.009306 &amp; 0.065703 \end{pmatrix}</div></div><p class="small">Off-diagonal terms describe interaction between parameters; symmetry follows from continuous mixed partial derivatives.</p></div><div class="card"><h3>Actual Hessian eigenvalues</h3><div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\begin{aligned} \lambda_1 &amp;= 0.00603294 \\ \lambda_2 &amp;= 0.05323680 \\ \lambda_3 &amp;= 0.07805335 \end{aligned}</div></div><p class="small">All positive → <strong>positive definite at w*</strong>. Eigenvectors identify principal directions; eigenvalues measure curvature along them. A small eigenvalue means a relatively flat direction.</p></div></div>
+ <p>Remember: <span class="math-inline">\nabla f(w^*) \approx (-1.06,\, 3.52,\, 1.97) \times 10^{-6}</span> is small but not exactly zero because this is numerical optimization. The Hessian is <strong>not</strong> expected to be zero at the minimum; a positive Hessian is the signature of an upward-curving valley.</p>
 </div>
 
 ## Why loss and classification metrics answer different questions
@@ -198,9 +185,7 @@ H(w) = Zᵀ D Z / 392      shape: (3, 3)</div>
   <div class="split"><div>
    <div class="confusion"><div></div><div class="axistag">Predicted 0</div><div class="axistag">Predicted 1</div><div class="axistag">Real 0</div><button type="button" class="cellbutton" data-cell="tn" aria-pressed="false"><strong>167</strong><span>True negative</span></button><button type="button" class="cellbutton err" data-cell="fp" aria-pressed="false"><strong>13</strong><span>False positive</span></button><div class="axistag">Real 1</div><button type="button" class="cellbutton err" data-cell="fn" aria-pressed="false"><strong>20</strong><span>False negative</span></button><button type="button" class="cellbutton" data-cell="tp" aria-pressed="false"><strong>192</strong><span>True positive</span></button></div>
   </div><div class="card" style="background:#f8fbff"><h3 id="confTitle">Choose a cell</h3><p id="confInfo" aria-live="polite" class="small">The diagonal contains correct classifications; the off-diagonal cells contain errors.</p><div class="minitable"><div class="rowpair"><span>Accuracy</span><strong>91.58%</strong></div><div class="rowpair"><span>Precision (class 1)</span><strong>93.66%</strong></div><div class="rowpair"><span>Recall / sensitivity</span><strong>90.57%</strong></div><div class="rowpair"><span>Specificity</span><strong>92.78%</strong></div><div class="rowpair"><span>F1 score</span><strong>92.09%</strong></div></div></div></div>
-  <div class="formula">Accuracy  = (TP+TN)/m       = (192+167)/392 ≈ 91.58%
-Precision = TP/(TP+FP)      = 192/205       ≈ 93.66%
-Recall    = TP/(TP+FN)      = 192/212       ≈ 90.57%</div>
+  <div class="math-block" role="region" aria-label="Equation" tabindex="0"><div class="math-display">\begin{aligned} \text{Accuracy} &amp;= \frac{TP+TN}{m} \\ &amp;= \frac{192+167}{392} \approx 91.58\% \\ \text{Precision} &amp;= \frac{TP}{TP+FP} \\ &amp;= \frac{192}{205} \approx 93.66\% \\ \text{Recall} &amp;= \frac{TP}{TP+FN} \\ &amp;= \frac{192}{212} \approx 90.57\% \end{aligned}</div></div>
   </div>
  </details>
  <div class="grid cols2"><div class="card"><h3>What the notebook truly demonstrates</h3><p>BFGS finds a lower <strong>training</strong> BCE than the prior candidates. The optimized model makes 359 correct hard predictions on the 392 training rows, at the notebook's fixed threshold.</p></div><div class="card"><h3>What you would test next</h3><p>Use held-out test data or cross-validation; examine ROC-AUC, precision–recall trade-offs and calibration, and choose the decision threshold based on the cost of each error. None of those tests were carried out in the Reto 4 notebook.</p></div></div>

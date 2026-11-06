@@ -1,6 +1,7 @@
 ---
 import Sidebar from '../components/Sidebar.astro';
 import { siteConfig } from '../config';
+import 'katex/dist/katex.min.css';
 import '../styles/global.css';
 
 interface Props {
@@ -95,6 +96,27 @@ const socialImage = new URL(image, Astro.site ?? siteConfig.siteUrl);
       }
 
       renderMermaidDiagrams();
+
+      async function renderLiveMath() {
+        const equations = document.querySelectorAll<HTMLElement>('[data-live-math]');
+        if (!equations.length) return;
+
+        const { default: katex } = await import('katex');
+        for (const equation of equations) {
+          const render = () => katex.render(equation.dataset.liveMath ?? '', equation, {
+            displayMode: true,
+            throwOnError: false,
+            trust: false,
+          });
+          render();
+          new MutationObserver(render).observe(equation, {
+            attributes: true,
+            attributeFilter: ['data-live-math'],
+          });
+        }
+      }
+
+      renderLiveMath();
     </script>
   </body>
 </html>
